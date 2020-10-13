@@ -5,13 +5,19 @@ import (
 
 	"github.com/202lp2/go2/models"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 //CRUD for items table
 func PersonsIndex(c *gin.Context) {
-	s := models.Person{Name: "Sean", Age: "12"}
+	var lis []models.Person
 
+	db, _ := c.Get("db")
+	conn := db.(gorm.DB)
+	conn.Find(&lis)
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Hola person: " + s.Name,
+		"msg": "thank you",
+		"r":   lis,
 	})
+
 }
