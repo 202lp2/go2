@@ -9,8 +9,14 @@ import (
 
 func SetupRouter() *gin.Engine {
 
+	conn, err := connectDB()
+	if err != nil {
+		panic("failed to connect database: " + err.Error())
+		//return
+	}
+
 	r := gin.Default()
-	//r.Use(dbMiddleware(*conn))
+	r.Use(dbMiddleware(*conn))
 
 	v1 := r.Group("/v1")
 	{
