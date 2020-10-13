@@ -35,6 +35,7 @@ func connectDB() (c *gorm.DB, err error) {
 	if err != nil {
 		panic("failed to connect database: " + err.Error())
 	}
+
 	return conn, err
 }
 

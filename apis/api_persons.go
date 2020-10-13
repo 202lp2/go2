@@ -14,6 +14,10 @@ func PersonsIndex(c *gin.Context) {
 
 	db, _ := c.Get("db")
 	conn := db.(gorm.DB)
+
+	// Migrate the schema
+	conn.AutoMigrate(&models.Person{})
+
 	conn.Find(&lis)
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
