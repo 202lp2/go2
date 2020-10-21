@@ -46,44 +46,44 @@ func redirectHandler(c *gin.Context) {
 	// for example, in revel you could use revel.Config.StringDefault(provider + "_clientID", "") etc.
 	providerSecrets := map[string]map[string]string{
 		"github": {
-			"clientID":     "fa2da627291fc054fc35",
-			"clientSecret": "f335c37b3de8a06da3fd9f1af3404350f18efdfe",
+			"clientID":     "7fda4d247b5f83c1cc52",
+			"clientSecret": "06f7fe0773dc41753b4f6269e3556b6d0db9916b",
 			"redirectURL":  "http://localhost:9000/auth/github/callback",
 		},
 		"linkedin": {
 			"clientID":     "xxxxxxxxxxxxxx",
 			"clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-			"redirectURL":  "http://localhost:9090/auth/linkedin/callback",
+			"redirectURL":  "http://localhost:9000/auth/linkedin/callback",
 		},
 		"facebook": {
 			"clientID":     "xxxxxxxxxxxxxx",
 			"clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-			"redirectURL":  "http://localhost:9090/auth/facebook/callback",
+			"redirectURL":  "http://localhost:9000/auth/facebook/callback",
 		},
 		"google": {
-			"clientID":     "xxxxxxxxxxxxxx",
-			"clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-			"redirectURL":  "http://localhost:9090/auth/google/callback",
+			"clientID":     "298623530953-q39343kik2tpbf8qhl933o5ken6sfru3.apps.googleusercontent.com",
+			"clientSecret": "KxT1ZfRgyPPbErRnNFf2DVIN",
+			"redirectURL":  "http://localhost:9000/auth/google/callback",
 		},
 		"bitbucket": {
 			"clientID":     "xxxxxxxxxxxxxx",
 			"clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-			"redirectURL":  "http://localhost:9090/auth/bitbucket/callback",
+			"redirectURL":  "http://localhost:9000/auth/bitbucket/callback",
 		},
 		"amazon": {
 			"clientID":     "xxxxxxxxxxxxxx",
 			"clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-			"redirectURL":  "http://localhost:9090/auth/amazon/callback",
+			"redirectURL":  "http://localhost:9000/auth/amazon/callback",
 		},
 		"slack": {
 			"clientID":     "xxxxxxxxxxxxxx",
 			"clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-			"redirectURL":  "http://localhost:9090/auth/slack/callback",
+			"redirectURL":  "http://localhost:9000/auth/slack/callback",
 		},
 		"asana": {
 			"clientID":     "xxxxxxxxxxxxxx",
 			"clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-			"redirectURL":  "http://localhost:9090/auth/asana/callback",
+			"redirectURL":  "http://localhost:9000/auth/asana/callback",
 		},
 	}
 
