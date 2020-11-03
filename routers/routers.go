@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"github.com/gin-contrib/cors"
 )
 
 func SetupRouter() *gin.Engine {
@@ -16,6 +17,13 @@ func SetupRouter() *gin.Engine {
 	}
 
 	r := gin.Default()
+
+	config := cors.DefaultConfig()
+	//config.AllowOrigins = []string{"http://localhost", "http://localhost:8086"}
+
+	r.Use(cors.New(config))
+
+
 	r.Use(dbMiddleware(*conn))
 
 	v1 := r.Group("/v1")
