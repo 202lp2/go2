@@ -12,6 +12,6 @@ func ItemsIndex(c *gin.Context) {
 	s := models.Item{Title: "Sean", Notes: "nnn"}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Hola Juan O " + s.Title,
+		"message": "Hola we " + s.Title,
 	})
 }

@@ -29,6 +29,7 @@ func SetupRouter() *gin.Engine {
 	{
 		v1.GET("/ping", apis.ItemsIndex)
 		v1.GET("/persons", apis.PersonsIndex)
+		v1.POST("/persons", apis.PersonsCreate)
 	}
 
 	return r
@@ -36,8 +37,8 @@ func SetupRouter() *gin.Engine {
 
 func connectDB() (c *gorm.DB, err error) {
 
-	//dsn := "docker:docker@tcp(mysql-db:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
-	dsn := "docker:docker@tcp(localhost:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "docker:docker@tcp(mysql-db:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "docker:docker@tcp(localhost:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
 	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {

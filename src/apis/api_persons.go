@@ -25,3 +25,21 @@ func PersonsIndex(c *gin.Context) {
 	})
 
 }
+
+func PersonsCreate(c *gin.Context) {
+	db, _ := c.Get("db")
+
+	conn := db.(gorm.DB)
+	
+		//var d Person
+		d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
+		if err := c.BindJSON(&d); err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		conn.Create(&d)
+		c.JSON(http.StatusOK, &d)
+	}
+
