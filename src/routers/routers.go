@@ -32,6 +32,7 @@ func SetupRouter() *gin.Engine {
 		v1.POST("/persons", apis.PersonsCreate)
 		v1.GET("/persons/:id", apis.PersonsGet)
 		v1.PUT("/persons/:id", apis.PersonsUpdate)
+		v1.DELETE("/persons/:id", apis.PersonsDelete)
 	}
 
 	return r
@@ -64,7 +65,7 @@ func CORSMiddleware() gin.HandlerFunc {
         c.Header("Access-Control-Allow-Origin", "*")
         c.Header("Access-Control-Allow-Credentials", "true")
         c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-        c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+        c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT, DELETE ")
 
         if c.Request.Method == "OPTIONS" {
             c.AbortWithStatus(204)

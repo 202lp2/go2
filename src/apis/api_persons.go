@@ -80,3 +80,20 @@ func PersonsUpdate(c *gin.Context) {
 		conn.Save(&d)
 		c.JSON(http.StatusOK, &d)
 }
+
+func PersonsDelete(c *gin.Context) {
+	db, _ := c.Get("db")
+
+	conn := db.(gorm.DB)	
+		
+	id := c.Param("id")
+		var d models.Person
+
+		if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		conn.Unscoped().Delete(&d)
+}
