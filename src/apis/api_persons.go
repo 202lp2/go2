@@ -58,10 +58,25 @@ func PersonsGet(c *gin.Context) {
 			})
 			return
 		}
-		//db.First(&d, id)
-		//c.BindJSON(&d)
+	c.JSON(http.StatusOK, &d)
+}
+
+func PersonsUpdate(c *gin.Context) {
+	db, _ := c.Get("db")
+
+	conn := db.(gorm.DB)	
+		
+	id := c.Param("id")
+		var d models.Person
+		if err := conn.First(&d, id).Error; err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		d.Name = c.PostForm("name")
+		d.Age = c.PostForm("age")
+		c.BindJSON(&d)
+		conn.Save(&d)
 		c.JSON(http.StatusOK, &d)
-
-
-
 }
