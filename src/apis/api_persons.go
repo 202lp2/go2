@@ -43,3 +43,25 @@ func PersonsCreate(c *gin.Context) {
 		c.JSON(http.StatusOK, &d)
 	}
 
+func PersonsGet(c *gin.Context) {
+	
+
+	db, _ := c.Get("db")
+
+	conn := db.(gorm.DB)
+
+	id := c.Param("id")
+		var d models.Person
+		if err := conn.First(&d, id).Error; err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		//db.First(&d, id)
+		//c.BindJSON(&d)
+		c.JSON(http.StatusOK, &d)
+
+
+
+}
