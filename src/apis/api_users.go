@@ -16,7 +16,7 @@ func UsersIndex(c *gin.Context) {
 
 	conn := db.(gorm.DB)
 	// Migrate the schema
-	conn.AutoMigrate(&models.User{})
+	//conn.AutoMigrate(&models.User{})
 
 	conn.Find(&lis)
 	c.JSON(http.StatusOK, gin.H{
@@ -32,13 +32,14 @@ func UsersCreate(c *gin.Context) {
 	conn := db.(gorm.DB)
 
 	//var d User
-	d := models.User{Email: c.PostForm("email"), PasswordHash: c.PostForm("password")}
+	//d := models.User{Email: c.PostForm("email")} //, PasswordHash: c.PostForm("password_hash")
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
+	d.PasswordHash = string("123")
 	conn.Create(&d)
 	c.JSON(http.StatusOK, &d)
 }
@@ -74,7 +75,7 @@ func UsersUpdate(c *gin.Context) {
 		return
 	}
 	d.Email = c.PostForm("email")
-	d.PasswordHash = c.PostForm("password")
+	d.PasswordHash = c.PostForm("password_hash")
 	c.BindJSON(&d)
 	conn.Save(&d)
 	c.JSON(http.StatusOK, &d)

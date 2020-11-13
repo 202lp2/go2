@@ -20,18 +20,18 @@ func (User) TableName() string {
 
 // BeforeCreate will set a UUID rather than numeric ID. https://gorm.io/docs/create.html
 func (tab *User) BeforeCreate(*gorm.DB) error {
-	uuidx := uuid.NewV4()
-	tab.ID = uuidx.String()
+	//uuidx := uuid.NewV4()
+	tab.ID = uuid.NewV4().String()
 	return nil
 }
 
 type User struct {
 	ID string `gorm:"primary_key;column:id" json:"id"` //json:"id,omitempty"
 	//ID              uuid.UUID `json:"id"`
-	CreatedAt       time.Time `json:"_"`
-	UpdatedAt       time.Time `json:"_"`
-	Email           string    `json:"email"`
-	PasswordHash    string    `json:"-"`
-	Password        string    `json:"password"`
-	PasswordConfirm string    `json:"password_confirm"`
+	CreatedAt    time.Time `json:"_"`
+	UpdatedAt    time.Time `json:"_"`
+	Email        string    `gorm:"column:email" json:"email"`
+	PasswordHash string    `json:"-"`
+	//Password        string    `json:"password"`
+	//PasswordConfirm string    `json:"password_confirm"`
 }
