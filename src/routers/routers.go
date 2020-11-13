@@ -22,17 +22,23 @@ func SetupRouter() *gin.Engine {
 
 	r.Use(CORSMiddleware())
 
-
 	r.Use(dbMiddleware(*conn))
 
 	v1 := r.Group("/v1")
 	{
 		v1.GET("/ping", apis.ItemsIndex)
+
 		v1.GET("/persons", apis.PersonsIndex)
 		v1.POST("/persons", apis.PersonsCreate)
 		v1.GET("/persons/:id", apis.PersonsGet)
 		v1.PUT("/persons/:id", apis.PersonsUpdate)
 		v1.DELETE("/persons/:id", apis.PersonsDelete)
+
+		v1.GET("/users", apis.UsersIndex)
+		v1.POST("/users", apis.UsersCreate)
+		v1.GET("/users/:id", apis.UsersGet)
+		v1.PUT("/users/:id", apis.UsersUpdate)
+		v1.DELETE("/users/:id", apis.UsersDelete)
 	}
 
 	return r
@@ -59,20 +65,19 @@ func dbMiddleware(conn gorm.DB) gin.HandlerFunc {
 }
 
 func CORSMiddleware() gin.HandlerFunc {
-    return func(c *gin.Context) {
+	return func(c *gin.Context) {
 
-        //c.Header("Access-Control-Allow-Origin", "http://localhost, http://localhost:8086,")
-        c.Header("Access-Control-Allow-Origin", "*")
-        c.Header("Access-Control-Allow-Credentials", "true")
-        c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-        c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT, DELETE ")
+		//c.Header("Access-Control-Allow-Origin", "http://localhost, http://localhost:8086,")
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT, DELETE ")
 
-        if c.Request.Method == "OPTIONS" {
-            c.AbortWithStatus(204)
-            return
-        }
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
 
-        c.Next()
-    }
+		c.Next()
+	}
 }
-

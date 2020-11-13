@@ -10,6 +10,7 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
+	github.com/twinj/uuid v1.0.0
 	golang.org/x/sys v0.0.0-20201101102859-da207088b7d1 // indirect
 	gorm.io/driver/mysql v1.0.2
 	gorm.io/gorm v1.20.2
