@@ -15,8 +15,6 @@ func PersonsIndex(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
-	// Migrate the schema
-	conn.AutoMigrate(&models.Person{})
 
 	conn.Find(&lis)
 	c.JSON(http.StatusOK, gin.H{
@@ -30,70 +28,69 @@ func PersonsCreate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
-	
-		//var d Person
-		d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
-		if err := c.BindJSON(&d); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-		conn.Create(&d)
-		c.JSON(http.StatusOK, &d)
+
+	var d models.Person
+	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
+	if err := c.BindJSON(&d); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
+	conn.Create(&d)
+	c.JSON(http.StatusOK, &d)
+}
 
 func PersonsGet(c *gin.Context) {
-	
 
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-		var d models.Person
-		if err := conn.First(&d, id).Error; err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
+	var d models.Person
+	if err := conn.First(&d, id).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 	c.JSON(http.StatusOK, &d)
 }
 
 func PersonsUpdate(c *gin.Context) {
 	db, _ := c.Get("db")
 
-	conn := db.(gorm.DB)	
-		
+	conn := db.(gorm.DB)
+
 	id := c.Param("id")
-		var d models.Person
-		if err := conn.First(&d, id).Error; err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-		d.Name = c.PostForm("name")
-		d.Age = c.PostForm("age")
-		c.BindJSON(&d)
-		conn.Save(&d)
-		c.JSON(http.StatusOK, &d)
+	var d models.Person
+	if err := conn.First(&d, id).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	d.Name = c.PostForm("name")
+	d.Age = c.PostForm("age")
+	c.BindJSON(&d)
+	conn.Save(&d)
+	c.JSON(http.StatusOK, &d)
 }
 
 func PersonsDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
-	conn := db.(gorm.DB)	
-		
-	id := c.Param("id")
-		var d models.Person
+	conn := db.(gorm.DB)
 
-		if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-		conn.Unscoped().Delete(&d)
+	id := c.Param("id")
+	var d models.Person
+
+	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	conn.Unscoped().Delete(&d)
 }

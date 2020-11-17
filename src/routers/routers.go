@@ -1,7 +1,11 @@
 package routers
 
 import (
+	"net/http"
+	"strings"
+
 	"github.com/202lp2/go2/apis"
+	"github.com/202lp2/go2/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -14,6 +18,9 @@ func SetupRouter() *gin.Engine {
 		panic("failed to connect database: " + err.Error())
 		//return
 	}
+	// Migrate the schema
+	conn.AutoMigrate(&models.Person{})
+	conn.AutoMigrate(&models.User{})
 
 	r := gin.Default()
 
@@ -29,7 +36,7 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/ping", apis.ItemsIndex)
 
 		v1.GET("/persons", apis.PersonsIndex)
-		v1.POST("/persons", apis.PersonsCreate)
+		v1.POST("/persons", authMiddleWare(), apis.PersonsCreate)
 		v1.GET("/persons/:id", apis.PersonsGet)
 		v1.PUT("/persons/:id", apis.PersonsUpdate)
 		v1.DELETE("/persons/:id", apis.PersonsDelete)
@@ -39,6 +46,8 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/users/:id", apis.UsersGet)
 		v1.PUT("/users/:id", apis.UsersUpdate)
 		v1.DELETE("/users/:id", apis.UsersDelete)
+		v1.POST("/login", apis.UsersLogin)
+		v1.POST("/logout", apis.UsersLogout)
 	}
 
 	return r
@@ -58,6 +67,7 @@ func connectDB() (c *gorm.DB, err error) {
 }
 
 func dbMiddleware(conn gorm.DB) gin.HandlerFunc {
+
 	return func(c *gin.Context) {
 		c.Set("db", conn)
 		c.Next()
@@ -79,5 +89,30 @@ func CORSMiddleware() gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+//https://dev.to/stevensunflash/a-working-solution-to-jwt-creation-and-invalidation-in-golang-4oe4
+
+//https://www.nexmo.com/blog/2020/03/13/using-jwt-for-authentication-in-a-golang-application-dr
+func authMiddleWare() gin.HandlerFunc { //ExtractToken
+	return func(c *gin.Context) {
+		bearer := c.Request.Header.Get("Authorization")
+		split := strings.Split(bearer, "Bearer ")
+		if len(split) < 2 {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Not authenticated."})
+			c.Abort()
+			return
+		}
+		token := split[1]
+		//fmt.Printf("Bearer (%v) \n", token)
+		isValid, userID := models.IsTokenValid(token)
+		if isValid == false {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Not authenticated (IsTokenValid)."})
+			c.Abort()
+		} else {
+			c.Set("user_id", userID)
+			c.Next()
+		}
 	}
 }
