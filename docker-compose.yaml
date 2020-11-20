@@ -3,9 +3,9 @@ version: '3'
 services:
   go2:
     build:
-      context: "./src"
+      context: "./app"
     volumes:
-      - "./src:/app/server"
+      - "./app:/app/server"
     container_name: go2_app
     restart: always
     ports:
